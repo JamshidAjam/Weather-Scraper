@@ -16,10 +16,30 @@
         background: url(wbg.jpg) no-repeat center center fixed;
         background-size: cover;
       }
+      body {
+        background: none;
+      }
+      .container {
+        margin-top: 3rem;
+      }
+      h1, #label {
+        color: #fff;
+      }
+      
     </style>
   </head>
   <body>
-    <h1>Hello, world!</h1>
+
+    <div class="container text-xs-center col-xs-12 col-sm-10 offset-sm-1 col-md-6 offset-md-3">
+      <h1>What's The Weather?</h1>
+      <form>
+        <fieldset class="form-group">
+          <label for="city" id="label">Enter the name of the city.</label>
+          <input type="text" name="city" id="city" class="form-control" placeholder="Eg. London, Tokyo">
+        </fieldset>
+        <button type="button" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
 
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>
