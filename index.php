@@ -1,3 +1,30 @@
+<?php 
+
+  $weather = "";
+  $error = "";
+  if (array_key_exists('city', $_GET)) {
+    $city = str_replace(' ', '', $_GET['city']);
+    $file_headers = @get_headers("http://www.weather-forecast.com/locations/".$city."/forecasts/latest");
+    if ($file_headers[0] == 'HTTP/1.1 404 Not Found') {
+      $error = "That city could not be found.";
+    } else {
+      $forecastPage = file_get_contents("http://www.weather-forecast.com/locations/".$city."/forecasts/latest");
+      $pageArray = explode('3 Day Weather Forecast Summary:</b><span class="read-more-small"><span class="read-more-content"> <span class="phrase">', $forecastPage);
+      if (sizeof($pageArray) > 1) {
+        $secondArray = explode('</span></span></span>', $pageArray[1]);
+        if (sizeof($secondArray) > 1) {
+          $weather = $secondArray[0];
+        } else {
+          $error = "That city could not be found.";
+        }
+      } else {
+        $error = "That city could not be found.";
+      }
+    }
+  }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,31 +41,51 @@
     <style type="text/css">
       html {
         background: url(wbg.jpg) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
         background-size: cover;
       }
       body {
         background: none;
       }
       .container {
-        margin-top: 3rem;
+        margin-top: 4rem;
       }
       h1, #label {
         color: #fff;
+      }
+      #weather {
+        margin-top: 1rem;
       }
       
     </style>
   </head>
   <body>
 
-    <div class="container text-xs-center col-xs-12 col-sm-10 offset-sm-1 col-md-6 offset-md-3">
+    <div class="container text-xs-center col-xs-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2">
       <h1>What's The Weather?</h1>
       <form>
         <fieldset class="form-group">
           <label for="city" id="label">Enter the name of the city.</label>
-          <input type="text" name="city" id="city" class="form-control" placeholder="Eg. London, Tokyo">
+          <input type="text" class="form-control" name="city" id="city" placeholder="Eg. London, Tokyo" value="
+          <?php 
+            if (array_key_exists('city', $_GET)) {
+              echo $_GET['city'];
+            }
+          ?>">
         </fieldset>
-        <button type="button" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
       </form>
+      <div id="weather"><?php 
+
+      if ($weather) {
+        echo '<div class="alert alert-success" role="alert"> '. $weather .'  </div>';
+      } else if ($error) {
+        echo '<div class="alert alert-danger" role="alert"> '. $error .'  </div>';
+      }
+
+      ?></div>  
     </div>
 
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
