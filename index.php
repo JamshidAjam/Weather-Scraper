@@ -68,8 +68,7 @@
       <form>
         <fieldset class="form-group">
           <label for="city" id="label">Enter the name of the city.</label>
-          <input type="text" class="form-control" name="city" id="city" placeholder="Eg. London, Tokyo" value="
-          <?php 
+          <input type="text" class="form-control" name="city" id="city" placeholder="Eg. London, Tokyo" value="<?php 
             if (array_key_exists('city', $_GET)) {
               echo $_GET['city'];
             }
